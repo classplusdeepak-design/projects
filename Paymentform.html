@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Almighty Payment | Confirmation Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #0f0c1f 0%, #1a1a3a 100%);
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+
+    .barcode-section {
+      background: linear-gradient(120deg, #f8f9ff 0%, #f0f2fe 100%);
+      padding: 1.2rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-qr {
+      background: white;
+      border-radius: 1rem;
+      padding: 0.8rem;
+      display: inline-block;
+      width: 100%;
+      max-width: 220px;
+      margin: 0 auto;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-qr img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.75rem;
+      display: block;
+    }
+
+    .payment-qr p {
+      font-size: 0.75rem;
+      color: #4b5563;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    .form-body {
+      padding: 1.5rem;
+    }
+
+    .note-box {
+      background: #fef9e3;
+      border-left: 4px solid #f59e0b;
+      padding: 0.9rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .note-box svg {
+      flex-shrink: 0;
+      stroke: #f59e0b;
+      width: 20px;
+      height: 20px;
+    }
+
+    .note-box span {
+      line-height: 1.4;
+    }
+
+    .input-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #1e1a4b;
+      margin-bottom: 0.5rem;
+    }
+
+    label svg {
+      width: 18px;
+      height: 18px;
+      stroke: #6366f1;
+    }
+
+    input, .phone-wrapper {
+      width: 100%;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1rem;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      background: #ffffff;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .phone-wrapper {
+      display: flex;
+      align-items: stretch;
+      background: white;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1rem;
+      transition: all 0.2s;
+    }
+
+    .phone-wrapper:focus-within {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .country-code {
+      background: #f8fafc;
+      padding: 0 0.9rem;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1e293b;
+      border-right: 1px solid #e2e8f0;
+      border-radius: 1rem 0 0 1rem;
+    }
+
+    .phone-wrapper input {
+      border: none;
+      border-radius: 0 1rem 1rem 0;
+      padding: 0.85rem 0.8rem;
+      flex: 1;
+    }
+
+    .phone-wrapper input:focus {
+      box-shadow: none;
+    }
+
+    .error-msg {
+      font-size: 0.7rem;
+      color: #e53e3e;
+      margin-top: 0.35rem;
+      margin-left: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .error-msg.hidden {
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(105deg, #6d28d9 0%, #4c1d95 100%);
+      border: none;
+      padding: 0.9rem;
+      border-radius: 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(105deg, #5b21b6 0%, #3b0764 100%);
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.4);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-btn .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .submit-btn.loading .spinner {
+      display: block;
+    }
+
+    .submit-btn.loading .btn-text,
+    .submit-btn.loading .btn-icon {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .toast-message {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) scale(0.9);
+      background: #1f2937;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border-radius: 100px;
+      font-weight: 500;
+      z-index: 100;
+      opacity: 0;
+      transition: 0.2s;
+      pointer-events: none;
+      font-size: 0.8rem;
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85);
+      white-space: nowrap;
+    }
+
+    .toast-message.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      border-top: 1px solid #ede9fe;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.75rem;
+      }
+      .form-body {
+        padding: 1.2rem;
+      }
+      .barcode-section {
+        padding: 1rem;
+      }
+      .note-box {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+      }
+      .submit-btn {
+        padding: 0.85rem;
+        font-size: 0.95rem;
+      }
+      input {
+        padding: 0.75rem 0.9rem;
+        font-size: 0.9rem;
+      }
+      .phone-wrapper input {
+        padding: 0.75rem 0.7rem;
+      }
+      .country-code {
+        padding: 0 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    
+    <div class="barcode-section">
+      <div class="payment-qr">
+        <img src="https://i.ibb.co/FLxM9sVM/almightypaymentcode.jpg" alt="Payment QR Code - Scan to Pay" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'180\' height=\'180\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23999\' stroke-width=\'1\'%3E%3Crect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\' ry=\'2\'%3E%3C/rect%3E%3Cline x1=\'9\' y1=\'9\' x2=\'15\' y2=\'15\'%3E%3C/line%3E%3Cline x1=\'15\' y1=\'9\' x2=\'9\' y2=\'15\'%3E%3C/line%3E%3C/svg%3E';">
+        <p>🔍 Scan this QR code to make payment</p>
+      </div>
+    </div>
+    
+    <div class="form-body">
+      <form id="paymentDetailsForm">
+        
+        <div class="note-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9.5" stroke="currentColor" />
+            <polyline points="16 2 22 8 16 8" stroke="currentColor" />
+            <line x1="10" y1="14" x2="21" y2="14" stroke="currentColor" />
+            <line x1="10" y1="18" x2="18" y2="18" stroke="currentColor" />
+            <line x1="3" y1="10" x2="8" y2="10" stroke="currentColor" />
+          </svg>
+          <span><strong>📱 After making the payment, please send the payment screenshot to this WhatsApp number:</strong> <span style="font-weight:700; color:#b45309;">9305692538</span></span>
+        </div>
+
+        <div class="input-group">
+          <label>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Full Name
+          </label>
+          <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name">
+          <div id="nameError" class="error-msg hidden">⚠️ Name is required</div>
+        </div>
+        
+        <div class="input-group">
+          <label>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            Mobile Number (WhatsApp)
+          </label>
+          <div class="phone-wrapper">
+            <span class="country-code">+91</span>
+            <input type="tel" id="mobileNumber" placeholder="9876543210" maxlength="10" inputmode="numeric">
+          </div>
+          <div id="mobileError" class="error-msg hidden">⚠️ Enter a valid 10-digit Indian mobile number (starting with 6-9)</div>
+        </div>
+        
+        <div class="input-group">
+          <label>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Email Address
+          </label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+          <div id="emailError" class="error-msg hidden">⚠️ Please enter a valid email address</div>
+        </div>
+        
+        <hr style="opacity:0.4">
+        
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <span class="btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 6L9 17l-5-5" stroke="white"/>
+            </svg>
+          </span>
+          <span class="btn-text">Submit details</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="toastMsg" class="toast-message">✨ Details recorded successfully!</div>
+
+<script>
+  (function() {
+    // ============================================
+    // 🔴 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
+    // ============================================
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwEYsmHs4TCmu8AhmCt19tyN6Jh6hHDEydbRXRTceDyJwg6Dc7UfaTXCMueyy-K-vE/exec';
+    // ============================================
+
+    const fullNameInput = document.getElementById('fullName');
+    const mobileInput = document.getElementById('mobileNumber');
+    const emailInput = document.getElementById('email');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    const nameErrorDiv = document.getElementById('nameError');
+    const mobileErrorDiv = document.getElementById('mobileError');
+    const emailErrorDiv = document.getElementById('emailError');
+    
+    const toast = document.getElementById('toastMsg');
+    
+    function isValidIndianMobile(number) {
+      const cleaned = number.replace(/\D/g, '');
+      if (cleaned.length !== 10) return false;
+      const firstDigit = cleaned.charAt(0);
+      return /[6-9]/.test(firstDigit) && /^\d{10}$/.test(cleaned);
+    }
+    
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+      return re.test(email.trim());
+    }
+    
+    function restrictToDigits(field) {
+      field.addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      });
+    }
+    restrictToDigits(mobileInput);
+    
+    function validateName() {
+      const val = fullNameInput.value.trim();
+      if (val === '') {
+        nameErrorDiv.classList.remove('hidden');
+        return false;
+      } else {
+        nameErrorDiv.classList.add('hidden');
+        return true;
+      }
+    }
+    
+    function validateMobile() {
+      const mob = mobileInput.value.trim();
+      if (!isValidIndianMobile(mob)) {
+        mobileErrorDiv.classList.remove('hidden');
+        return false;
+      } else {
+        mobileErrorDiv.classList.add('hidden');
+        return true;
+      }
+    }
+    
+    function validateEmail() {
+      const email = emailInput.value.trim();
+      if (email === '' || !isValidEmail(email)) {
+        emailErrorDiv.classList.remove('hidden');
+        return false;
+      } else {
+        emailErrorDiv.classList.add('hidden');
+        return true;
+      }
+    }
+    
+    fullNameInput.addEventListener('blur', validateName);
+    mobileInput.addEventListener('blur', validateMobile);
+    emailInput.addEventListener('blur', validateEmail);
+    
+    // Send data to Google Sheet
+    async function sendToGoogleSheet(userData) {
+      try {
+        const response = await fetch(GOOGLE_SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData)
+        });
+        
+        // With no-cors mode, we can't read the response
+        // But if no error is thrown, the request was sent successfully
+        return true;
+      } catch (error) {
+        console.error('❌ Error sending to Google Sheet:', error);
+        return false;
+      }
+    }
+    
+    // Form Submission
+    const form = document.getElementById('paymentDetailsForm');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      let isValid = true;
+      
+      if (!validateName()) isValid = false;
+      if (!validateMobile()) isValid = false;
+      if (!validateEmail()) isValid = false;
+      
+      if (isValid) {
+        const userData = {
+          fullName: fullNameInput.value.trim(),
+          mobileNumber: '91'+ mobileInput.value.trim(),
+          email: emailInput.value.trim(),
+          timestamp: new Date().toLocaleString('en-IN', { 
+            timeZone: 'Asia/Kolkata',
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          })
+        };
+        
+        console.log('✅ Payment Data:', userData);
+        
+        // Save to localStorage as backup
+        let allRecords = JSON.parse(localStorage.getItem('almightyPayments')) || [];
+        allRecords.push(userData);
+        localStorage.setItem('almightyPayments', JSON.stringify(allRecords));
+        
+        // Show loading state on button
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+        
+        // Send to Google Sheet
+        const sent = await sendToGoogleSheet(userData);
+        
+        // Remove loading state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        
+        if (sent) {
+          toast.textContent = '✅ Details submitted successfully!';
+        } else {
+          toast.textContent = '⚠️ Saved locally. Sheet sync failed.';
+        }
+        
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2800);
+        
+        // Reset form
+        fullNameInput.value = '';
+        mobileInput.value = '';
+        emailInput.value = '';
+        nameErrorDiv.classList.add('hidden');
+        mobileErrorDiv.classList.add('hidden');
+        emailErrorDiv.classList.add('hidden');
+        
+        setTimeout(() => {
+          alert('🎉 Thank you! Your details have been recorded successfully.');
+        }, 300);
+      } else {
+        alert('Please correct the errors before submitting.');
+      }
+    });
+  })();
+</script>
+</body>
+</html>
